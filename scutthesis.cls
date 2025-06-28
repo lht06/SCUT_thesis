@@ -40,7 +40,7 @@
 \def \institute#1{\gdef\@institute{#1}}
 \def \supervisor#1{\gdef\@supervisor{#1}}
 \ifmasterdegree \newcommand{\@degree}{硕士} \else \newcommand{\@degree}{博士} \fi
-\newcommand{\thesissubject}{华南理工大学\@degree{}学位论文}
+\newcommand{\thesissubject}{华南理工大学实训报告}
 \renewcommand{\today}{\the\year~年~\the\month~月~\the\day~日}
 
 %% 加载几个常用的sty packages
@@ -87,15 +87,15 @@
 \XeTeXlinebreaklocale "zh" %采用中文断行方式
 \XeTeXlinebreakskip = 0pt plus 1pt %字元间可加入0pt~1pt 的弹性间距，这样才能排出左右对齐的段落。
 
-\setCJKmainfont{SimSun}
+\setCJKmainfont{PingFang SC}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-by MCH
-\setCJKsansfont{SimSun}	%设置默认字体，防止报警
-\setCJKmonofont{SimSun} %设置默认字体，防止报警
+\setCJKsansfont{PingFang SC}	%设置默认字体，防止报警
+\setCJKmonofont{PingFang SC} %设置默认字体，防止报警
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setCJKfamilyfont{song}{SimSun}
-\setCJKfamilyfont{hei}{SimHei}
-\setCJKfamilyfont{kai}{KaiTi_GB2312}
-\setCJKfamilyfont{fang}{FangSong_GB2312}
+\setCJKfamilyfont{song}{Songti SC}
+\setCJKfamilyfont{hei}{Heiti SC}
+\setCJKfamilyfont{kai}{Kaiti SC}
+\setCJKfamilyfont{fang}{STFangsong}
 %------------for mac----------------
 %\setCJKmainfont{STSong}%衬线字体 
 %\setCJKsansfont{STHeitiSC-Light}%serif是有衬线字体sans serif无衬线字体。
@@ -241,6 +241,7 @@
 
 %% 表格
 \RequirePackage{array} % 扩展了 array 和 tabular 环境功能
+\RequirePackage{multirow} % 支持表格中的多行合并
 \RequirePackage{booktabs} % 增加对三线表格的支持 % \toprule，\midrule，\bottomrule
 \RequirePackage{longtable} % 长表格支持，截断跨页
 %\RequirePackage{ctable, threeparttable} % 支持表格注释,复杂表格，一般用不上
@@ -384,7 +385,7 @@
 \renewcommand{\contentsname}{目\texorpdfstring{\quad}{}录}	%中文目录
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \titlecontents{chapter}[0ex]{\tocchapterfont}{%
-    第\xCJKnumber{\thecontentslabel}章\quad{}}{}{%
+    }{}{%
     \hspace{.5em}\titlerule*[5pt]{$\cdot$}\contentspage}%
 \titlecontents{section}[1em]{\tocsectionfont}{%
     \thecontentslabel\quad{}}{}{%
@@ -403,8 +404,8 @@
 % Text style
 %%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[pagestyles, rm]{titlesec}%调用titlesec涵盖fancyhdr的功能
-\renewcommand{\chaptername}{第\xCJKnumber{\thechapter}章}
-\titleformat{\chapter}[hang]{\textchapterfont}{第\xCJKnumber{\thechapter}章}{1em}{}
+\renewcommand{\chaptername}{}
+\titleformat{\chapter}[hang]{\textchapterfont}{}{0em}{}
 \titleformat{\section}[hang]{\textsectionfont}{\thesection}{1em}{}
 \titleformat{\subsection}[hang]{\textsubsectionfont}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}[hang]{\textsubsubsectionfont}{\thesubsubsection}{1ex}{}% 小四黑体居左
@@ -439,26 +440,74 @@
    \else
 %%buildin coverpage
 \begin{titlepage}
-\raggedleft
+\centering
 \null
-\vskip 4em
+\vskip 0.5cm
 
-\bigskip
-\centerline{\songti\erhao  {\thesissubject} }
-\vskip 4em
+% 校名
+\begin{center}
+\includegraphics[width=10cm]{assets/华南理工大学校名.jpg}
+\end{center}
+\vskip 3cm
 
-\bigskip
-\centerline{\heiti\yihao  {\@title} }
-\vskip 2em
+% 报告标题
+\begin{center}
+{\heiti\sanhao 《openGauss 数据库并行物化算子性能优化》实训报告}\\[0.4cm]
+{\songti\sihao (2024-2025 学年第二学期)}
+\end{center}
+\vskip 2cm
 
-\bigskip
-\centerline{\songti\erhao   {\@author} }
-\bigskip
-\centerline{\songti\erhao   {\@supervisor} }
+% 学生姓名 - 无边框
+\begin{center}
+{\songti\sihao 学生姓名：\quad \@author}
+\end{center}
+\vskip 1cm
 
-\vfill
-\centerline{\songti\normalsize{\@institute}}
-\centerline{\songti\normalsize{\@date}}
+% 提交日期和学生签名 - 无边框，分行显示
+\begin{flushleft}
+\hspace{2cm}{\songti\sihao 提交日期：\quad \@date} \hfill {\songti\sihao 学生签名：\quad \@author}\hspace{2cm}
+\end{flushleft}
+\vskip 1cm
+
+% 详细信息表格 - 严格按照sample.png格式
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+\hline
+{\songti\wuhao 学\quad 号} & {\songti\wuhao 202230481431} & {\songti\wuhao 座位编号} & {\songti\wuhao } \\
+\hline
+{\songti\wuhao 学\quad 院} & {\songti\wuhao 软件学院} & {\songti\wuhao 专业班级} & {\songti\wuhao 软件工程 3 班} \\
+\hline
+{\songti\wuhao 课程名称} & {\songti\wuhao openGauss 数据库并行物化算子性能优化实训报告} & {\songti\wuhao 任课教师} & {\songti\wuhao 汤德佑} \\
+\hline
+\end{tabular}
+\end{center}
+\vskip 1.5cm
+
+% 教师评语区域
+\begin{center}
+\renewcommand{\arraystretch}{4}
+\begin{tabular}{|p{15cm}|}
+\hline
+{\songti\wuhao 教师评语：} \\
+\\
+\\
+\\
+\hline
+\end{tabular}
+\end{center}
+\vskip 1cm
+
+% 成绩评定 - 加边框
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|p{15cm}|}
+\hline
+{\songti\sihao 本报告成绩评定：\quad \underline{\hspace{3cm}} 分} \\
+\hline
+\end{tabular}
+\end{center}
+
 \end{titlepage}
 
 \fi
@@ -542,19 +591,14 @@
 
 
 %\sethead[ even-left ][ even-center ][ even-right ]    { odd-left }{ odd-center }{ odd-right }
-%\newpagestyle{revtitlestyle}{
-% \ifchapterx
-%  \sethead[][{\headfont{}\thesissubject}][] % 页眉偶数页
-%  {}{{\headfont{}\@chapterxname}}{} % 页眉奇数页
-% \else
-%  \sethead[][{\headfont{}\thesissubject}][] % 页眉偶数页，五号字体，居中
-%  {}{{\headfont{}\chaptertitlename\quad\chaptertitle}}{} % 页眉奇数页，五号字体，居中
-% \fi
-%  \setfoot[][\headfont{}\thepage][] %偶数页码五号宋体居右
-%   {}{\headfont{}\thepage}{}%页码五号宋体居右
-%  \headrule%上横线
-%  \setheadrule{1.5pt}%设置横线粗细
-%}
+\newpagestyle{revtitlestyle}{
+  \sethead[][{openGauss 并行物化算子优化实验报告}][] % 页眉偶数页
+  {}{{openGauss 并行物化算子优化实验报告}}{} % 页眉奇数页
+  \setfoot[][\headfont{}\thepage][] %偶数页码五号宋体居右
+   {}{\headfont{}\thepage}{}%页码五号宋体居右
+  \headrule%上横线
+  \setheadrule{1.5pt}%设置横线粗细
+}
 
 %\let\orig@bibliography=\bibliography
 %\renewcommand{\bibliography}[1]{
@@ -575,23 +619,18 @@
     \@mainmatterfalse
 }
 
-%%\renewcommand\mainmatter{%
-%% \@mainmattertrue
-%%  \chapterxfalse % 改变页眉标题方式
-%%  \ifodd \arabic{page} % 目录后如果是奇数页结尾，则插入一个无页码空白页
-%%   \clearpage
-%%   \pagestyle{empty}
-%%   \mbox{} %空白占位符
-%%  \fi
-%%  \clearpage
-%%  \pagenumbering{arabic}
-%%
-%%  \makeatletter
-%%  \let\ps@plain=\ps@revtitlestyle
-%%  \makeatother
-%%  \pagestyle{revtitlestyle} % here and continue
-%%  % 开始正文部分
-%%}
+\renewcommand\mainmatter{%
+ \@mainmattertrue
+  \chapterxfalse % 改变页眉标题方式
+  \clearpage
+  \pagenumbering{arabic}
+
+  \makeatletter
+  \let\ps@plain=\ps@revtitlestyle
+  \makeatother
+  \pagestyle{revtitlestyle} % here and continue
+  % 开始正文部分
+}
 %\RequirePackage{fancyhdr}
 
 
