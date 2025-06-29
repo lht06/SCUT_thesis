@@ -1,21 +1,3 @@
-% Copyright (C) 2010-2015 by Alwin Tsui <alwintsui@gmail.com>
-% and Quansheng Guan <qshguan@gmail.com>
-%
-% This file is part of the scutthesis package project.
-% https://github.com/alwintsui/scutthesis
-% ---------------------------------------------------
-% This file may be distributed and/or modified under the
-% conditions of the GNU General Public License v3
-% of this license or (at your option) any later version.
-%
-% modified from thuthesis.cls,seuthesis.cls and tjthesis.cls
-
-%% Jun 19, 2010.参照现有国内各高校论文latex模板(东南，清华，北航等)，取其精华去其糟粕，写成初版
-%% Jun 20, 2010,修改abstract,keywords,Appendence支持lyx的scutthesis.layout
-%% Jun 22, 2010,用natbib来控制引用标的显示
-%% v2.0.1, Mar 31, 2011,合并了Quansheng Guan部分修改,主要包含：草稿引入水印，加入定理环境，完善标题、表格和程序代码等格式
-%% v2.1.0, Jun 20, 2015,启用pdfcover选项，修改代码区显示方式，附录页眉，去除草稿水印，lyx模板
-
 
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesClass{scutthesis}[2011/03/31 2.0.1 The LaTeX class for the thesis of South China University of Technology]
@@ -57,18 +39,13 @@
 \RequirePackage[final]{pdfpages}
 \RequirePackage{color}
 \RequirePackage[no-math]{fontspec}
-%\RequirePackage{prettyref} %不需要
-
-%% 设置页面布局
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\tablewidth}
+\setlength{\tablewidth}{14cm} % <- 你想要的总宽度，可以改成 \textwidth 或别的
 \RequirePackage[left=2.5cm,right=2.5cm,bottom=2.5cm,top=2.5cm,%设置页面上下左右各为25mm
  headheight=1.5cm,%页眉所占高度
  footskip=1cm %页脚所占高度
 ]{geometry}
 
-%% 字体设置
-%\RequirePackage[BoldFont, SlantFont,CJKnumber]{xeCJK} % xeCJK package, CJKnumber deprecated.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-by MCH
 \RequirePackage[BoldFont, SlantFont]{xeCJK} %CJKnumber已弃用
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\@ifpackagelater {xeCJK}  { 2008/12/29 }
@@ -79,10 +56,6 @@
 %\punctstyle{kaiming}
 \setmainfont[Mapping=tex-text]{Times New Roman}%\rmfamily 使用的字体,默认英文和数字的字体。% setmainfont是 fontspec 宏包中的一个命令，用于设置 LaTeX 文档中的主字体（即英文部分的主要字体）。setmainfont 用于设置正文中的英文字体。它会影响所有非数学、非 CJK（中文、日文、韩文）字符的字体。
 
-% 若对默认数学公式字体不满意，启用下面三条命令，否则注释掉（此时是采用久经验证可行的默认字体）。实际上就两条（引入unicode-math包并使用setmathfont命令设置字体）
-% \usepackage{unicode-math} % 引入后一些符号仍需要amssymb和amsmath，但可以不需要mathrsfs。引入unicode-math后，很多符号，加粗的命令都变了，需要好好看包文档。
-% \setmathfont{XITS Math}[math-style=ISO,bold-style=ISO] % 注释掉就是unicode-math默认的，和latex默认的也不同，具体看文档。
-% \setmathfont{XITS Math}[range={cal, bfcal}, StylisticSet=1] %为解决花体问题引入。
 
 \XeTeXlinebreaklocale "zh" %采用中文断行方式
 \XeTeXlinebreakskip = 0pt plus 1pt %字元间可加入0pt~1pt 的弹性间距，这样才能排出左右对齐的段落。
@@ -96,27 +69,13 @@
 \setCJKfamilyfont{hei}{Heiti SC}
 \setCJKfamilyfont{kai}{Kaiti SC}
 \setCJKfamilyfont{fang}{STFangsong}
-%------------for mac----------------
-%\setCJKmainfont{STSong}%衬线字体 
-%\setCJKsansfont{STHeitiSC-Light}%serif是有衬线字体sans serif无衬线字体。
-%\setCJKmonofont{STFangsong}%中文等宽字体
-%
-%
-%\setCJKfamilyfont{song}{STSong}
-%\setCJKfamilyfont{hei}{STHeitiSC-Light}
-%\setCJKfamilyfont{kai}{STKaitiSC-Regular}
-%\setCJKfamilyfont{fang}{STFangsong}
-%---------------------------------------------
+
 
 \newcommand{\songti}{\CJKfamily{song}}
 \newcommand{\heiti}{\CJKfamily{hei}}
 \newcommand{\kaiti}{\CJKfamily{kai}}
 \newcommand{\fangsong}{\CJKfamily{fang}}
 
-% 很多字体字号并没有使用。第一个参数指定字号，第二个参数为baselineskip默认=1.2倍字号(pt). 结合\linespread可以实现控制行距。
-% 但这里的设置暂时不清楚为什么，也暂时找不到其他方法。
-% ToDo：使用更好的字体字号行距控制方法。例如用\usepackage{setspace}，然后\onehalfspacing实现单倍行距。但具体细节待考证。
-%% Font size
 \newcommand{\chuhao}{\fontsize{42pt}{46pt}\selectfont}
 \newcommand{\xiaochuhao}{\fontsize{36pt}{40pt}\selectfont}
 \newcommand{\yichu}{\fontsize{32pt}{36pt}\selectfont}
@@ -143,15 +102,9 @@
     \parindent\CJK@twochars}
 \newcommand{\cndash}{\rule{0.0em}{0pt}\rule[0.35em]{1.4em}{0.05em}\rule{0.2em}{0pt}} % 中文破折号,added by Quansheng
 
-% 报警处理
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%不要拉大行距使得页面充满
+
 \raggedbottom
-% 去掉页面中的badboxes报警，同上
-% \setlength\parskip{.5\baselineskip
-% 	plus .1\baselineskip
-% 	minus .4\baselineskip
-% }
+
 \hbadness=10000 \tolerance=10000 \hfuzz=150pt % 去掉表格中的badboxes报警,看着不爽
 
 % My fonts for Scut thesis字体字号设置，由于部分内容的字体使用默认设置，因此部分字体用不到。
@@ -181,20 +134,6 @@
 
 \newcommand{\thanktitlefont}{\heiti\sanhao}    % “致谢”字样的字体
 \newcommand{\appendixtitlefont}{\heiti\sanhao} % “附录”字样的字体
-%\normalfont command (essentially) executes the command sequence:
-%  \fontencoding{\encodingdefault}
-%  \fontfamily{\familydefault}
-%  \fontseries{\seriesdefault}
-%  \fontshape{\shapedefault}
-%  \selectfont
-
-
-
-%% 图表环境
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%图题(由图号和图名组成)。图号为“图1-1”格式。图题置于图下，有图注或其他说明时应置于图题之上。
-%表序与表名置于表上。
-%图题和表题在lyx中插图或插表时，可以参照标题的位置，在上还是在下。
 
 \RequirePackage{graphicx}
 \DeclareGraphicsExtensions{.pdf,.eps,.jpg,.png} % 如果插入的图片没有指定扩展名,那么依次搜索下面的扩展名所对应的文件
@@ -216,36 +155,12 @@
 \captionsetup[subfloat]{captionskip=6bp,nearskip=0bp,farskip=0bp,topadjust=0bp,
   justification=centering,labelformat=brace,labelsep=space,subrefformat=subparens,listofformat=parens}%要使分图题和图题一样字号，选项加上 font={capFont}
 
-%%%%%%%%%%定义双标题命令
-% 注释掉双语标题 ——by mch
-%\newcommand{\FigureBicaption}[2]{
-%  \renewcommand{\figurename}{图}
-%  \vspace{8pt}
-%  \caption{#1}
-%  \addtocounter{figure}{-1}
-%  \renewcommand{\figurename}{Fig.}
-%  \captionsetup{list=false}
-%  \vspace{6pt}
-%  \caption{#2}
-%  \captionsetup{list=true}
-%  \renewcommand{\figurename}{图}
-%}
-%\newcommand{\SubfloatCaption}[4]  % Two Parameters, the first one is the width of the subfigure,
-%{
-%  \subfloat[#2]{
-%    \label{#3}
-%    \addtocounter{subfigure}{-1}
-%    \subfloat[\vspace{-5pt}#1]{#4}
-%  }%
-%}
-
-%% 表格
 \RequirePackage{array} % 扩展了 array 和 tabular 环境功能
 \RequirePackage{multirow} % 支持表格中的多行合并
 \RequirePackage{booktabs} % 增加对三线表格的支持 % \toprule，\midrule，\bottomrule
 \RequirePackage{longtable} % 长表格支持，截断跨页
 %\RequirePackage{ctable, threeparttable} % 支持表格注释,复杂表格，一般用不上
-%\RequirePackage{tabularx}
+\RequirePackage{tabularx}
 \captionsetup[table]{position=top}
 %定义双标题命令
 \newcommand{\TableBicaption}[2]{
@@ -260,21 +175,10 @@
   \captionsetup{list=true}
   \renewcommand{\tablename}{表}
 }
-% 算法环境，按需使用。
-% --by MCH
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
 \renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}} % 算法编号格式
-% --原版：
-%\RequirePackage{algorithm}
-%\RequirePackage{algpseudocode}
-%% algorithm2e 中文标题定制
-%\renewcommand{\algorithmicname}{算法}
-%\renewcommand\thealgocf{\csname the\algocf@within\endcsname-\@arabic\c@algocf}%
-%\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm
-%\renewcommand{\algorithmicensure}{\textbf{Process:}} % Use Output in the format of Algorithm
-
 
 \renewcommand{\theequation}{\arabic{chapter}-\arabic{equation}}
 \renewcommand{\thetable}{\arabic{chapter}-\arabic{table}}
@@ -316,32 +220,6 @@
   \itemsep \parsep
   \partopsep \p@ \@plus\z@ \@minus\p@}
 
-%\RequirePackage{enumitem}
-%\setlist{noitemsep,nolistsep,topsep=0pt,itemindent=1em}
-%\setenumerate[1]{label=\arabic*), ref=\arabic*}
-%\setenumerate[2]{label=\emph{\alph*}),ref=\theenumi.\emph{\alph*}}
-%\setenumerate[3]{label=\roman*), ref=\theenumii.\roman*}
-% Ref: http://bbs.ctex.org/viewthread.php?tid=52331&page=1
-% \setitemize{itemindent=38pt,leftmargin=0pt,itemsep=0ex,listparindent=26pt,partopsep=0pt,parsep=\parskip,topsep=-0.25ex}
-% \setenumerate{itemindent=38pt,leftmargin=0pt,itemsep=0ex,listparindent=26pt,partopsep=0pt,parsep=\parskip,topsep=-0.25ex}
-% \setdescription{itemindent=38pt,leftmargin=0pt,itemsep=0ex,listparindent=26pt,partopsep=0pt,parsep=\parskip,topsep=-0.25ex}
-
-% \RequirePackage{paralist}% 修改列表格式
-% \setdefaultenum{1)}{a)}{i.}{A.}% 设置列表模式,for \enumerate
-% \setdefaultleftmargin{4ex}{}{}{}{}{}%standard \itemize :• – ∗ ·
-
-%\RequirePackage[numbers,super,square,sort&compress]{natbib}  %改biblatex
-% 用natbib代替下面的一些设置
-%\let\originalcite=\cite
-%\renewcommand{\cite}[1]{\textsuperscript{\originalcite{#1}}}
-%\renewcommand{\citet}[1]{\originalcite{#1}}
-
-%% 程序代码格式
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\RequirePackage[ruled,vlined,algochapter]{algorithm2e}
-
-
-
 \RequirePackage{listings}
 \definecolor{mygray}{RGB}{245,245,245}
 \lstset{
@@ -365,13 +243,7 @@
  extendedchars=false,columns=flexible,mathescape=false
   breakautoindent=true
 }
-\renewcommand{\lstlistingname}{代码} %% 重命名Listings标题头 added by Guan
-
-%%%%%%%%%%%%%%%%%%--by MCH--%%%%%%%%%%%%%%%%%%%%%%%%%%%%2022-2-26更新
-%---ref: https://blog.csdn.net/youyagaozitai/article/details/70210297?%3E
-% 增加目录的项目——tocbibind
-%正文区写 \tableofcontents %输出目录命令，输出内容是正文中/section等的内容。 
-%若在目录中显示其他条目，使用：  
+\renewcommand{\lstlistingname}{代码}
 \RequirePackage[nottoc]{tocbibind} %增加目录项目，tocbibind宏包会自动加入目录项本身、参考文献、索引等项目。[nottoc]取消了对自身的显示
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -401,8 +273,6 @@
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{2}
 
-% Text style
-%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[pagestyles, rm]{titlesec}%调用titlesec涵盖fancyhdr的功能
 \renewcommand{\chaptername}{}
 \titleformat{\chapter}[hang]{\textchapterfont}{}{0em}{}
@@ -419,11 +289,6 @@
 
 \newcommand{\linespacing}[1]{\linespread{#1}\selectfont}% 行距命令
 
-
-%\renewcommand\backmatter{%
-%  % there is no label number for reference chapter
-%}
-%==========
 \AtBeginDocument{\CJKindent{}%
     \makeindex%
     \normalsize%正文字体格式
@@ -431,101 +296,72 @@
   }
 \AtEndDocument{}
 
-%------------------
-\renewcommand{\maketitle}{% called outside
-  \ifpdfcover
-%%coverpage from pdf file
-       %% \includepdf[pages=-]{thesis_cover.pdf}%pdf文件路径为主文件tex或lyx的当前目录
-          \includepdf[pages={1-5,{},7-8}]{cover_file/thesis_cover.pdf}
-   \else
-%%buildin coverpage
+% --- 报告封面页定义 (紧凑版本，保证在一页内) ---
+\renewcommand{\maketitle}{
 \begin{titlepage}
+\pagestyle{empty} % 确保此页无页眉页脚
 \centering
 \null
-\vskip 0.5cm
+\vspace*{0cm} % 进一步减小顶部空白
 
-% 校名
+% 校徽和校名
 \begin{center}
-\includegraphics[width=10cm]{assets/华南理工大学校名.jpg}
+\includegraphics[height=2.5cm]{assets/华南理工大学校名.jpg}
 \end{center}
-\vskip 3cm
+\vspace{0.8cm}
 
 % 报告标题
 \begin{center}
-{\heiti\sanhao 《openGauss 数据库并行物化算子性能优化》实训报告}\\[0.4cm]
-{\songti\sihao (2024-2025 学年第二学期)}
+{\heiti\erhao 《openGauss并行物化算子优化》实训报告}\\[0.6cm] % 减小了间距
+{\songti\sanhao (2024-\,2025 学年第 2 学期)}
 \end{center}
-\vskip 2cm
+\vspace{0.2cm} % 减小了间距
 
-% 学生姓名 - 无边框
+% 学生姓名
 \begin{center}
-{\songti\sihao 学生姓名：\quad \@author}
+{\songti\sanhao 学生姓名：吕浩天}
 \end{center}
-\vskip 1cm
+\vspace{0.4cm} % 减小了间距
 
-% 提交日期和学生签名 - 无边框，分行显示
-\begin{flushleft}
-\hspace{2cm}{\songti\sihao 提交日期：\quad \@date} \hfill {\songti\sihao 学生签名：\quad \@author}\hspace{2cm}
-\end{flushleft}
-\vskip 1cm
-
-% 详细信息表格 - 严格按照sample.png格式
+% 完整的大表格 - 所有信息都在一个连续表格内
 \begin{center}
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
-\hline
-{\songti\wuhao 学\quad 号} & {\songti\wuhao 202230481431} & {\songti\wuhao 座位编号} & {\songti\wuhao } \\
-\hline
-{\songti\wuhao 学\quad 院} & {\songti\wuhao 软件学院} & {\songti\wuhao 专业班级} & {\songti\wuhao 软件工程 3 班} \\
-\hline
-{\songti\wuhao 课程名称} & {\songti\wuhao openGauss 数据库并行物化算子性能优化实训报告} & {\songti\wuhao 任课教师} & {\songti\wuhao 汤德佑} \\
-\hline
-\end{tabular}
-\end{center}
-\vskip 1.5cm
-
-% 教师评语区域
-\begin{center}
-\renewcommand{\arraystretch}{4}
-\begin{tabular}{|p{15cm}|}
-\hline
-{\songti\wuhao 教师评语：} \\
-\\
-\\
-\\
-\hline
-\end{tabular}
-\end{center}
-\vskip 1cm
-
-% 成绩评定 - 加边框
-\begin{center}
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{|p{15cm}|}
-\hline
-{\songti\sihao 本报告成绩评定：\quad \underline{\hspace{3cm}} 分} \\
-\hline
-\end{tabular}
+  % 调整行高
+  \renewcommand{\arraystretch}{1.6} % 适中的行高
+  % 设置单元格左右的内边距
+  \setlength{\tabcolsep}{8pt}
+  % 使用 tabularx 环境，使其宽度与文本宽度一致
+  \begin{tabularx}{\textwidth}{|p{6.8cm}|p{6.8cm}|}
+    \hline
+    \sihao\songti \textbf{提交日期：}2025 年 6 月 29 日 & \sihao\songti \textbf{学生签名：} 吕浩天  \\
+    \hline
+    \sihao\songti \textbf{学\hspace{1cm}号：}202230481431 & \sihao\songti \textbf{座位编号：}\underline{\hspace{3.2cm}} \\
+    \hline
+    \sihao\songti \textbf{学\hspace{1cm}院：}软件学院 & \sihao\songti \textbf{专业班级：}软件工程3班 \\
+    \hline
+    \sihao\songti \textbf{课程名称：}《openGauss并行物化算子优化》 & \sihao\songti \textbf{任课教师：}汤德佑 \\
+    \hline
+    % 教师评语：跨两列，形成一个大的评语区域
+    \multicolumn{2}{|p{\dimexpr\textwidth-2\tabcolsep-2\arrayrulewidth\relax}|}{
+        \vspace{0pt} % 顶部留一点空间
+        \sihao\songti \textbf{教师评语：}
+        \vspace{5.5cm} % 控制页面长度的关键参数
+        \vspace{5pt} % 底部留一点空间
+    } \\
+    \hline
+    % 成绩评定也在表格内
+    \multicolumn{2}{|p{\dimexpr\textwidth-2\tabcolsep-2\arrayrulewidth\relax}|}{
+        \vspace{5pt}
+        \sihao\songti \textbf{本报告成绩评定：}\underline{\hspace{2.5cm}}\textbf{分}
+        \vspace{5pt}
+    } \\
+    \hline
+  \end{tabularx}
 \end{center}
 
+\vfill % 填充剩余空间，使内容整体向上对齐
 \end{titlepage}
-
-\fi
 }
-%%摘要分中英文页，而且有两者排版方式：
-%一种是采用\abstractCN和\abstractEN方式以“摘要”和“Abstract”为页标题
-%另一种采用研究报告的标题为摘要页的标题，这时使用\charpter*{报告中文或英文标题}和\chapterx{摘要或Abstract}
-%\newenvironment{abstractCN}{
-%  \chapter*{摘\quad 要}
-%
-%  \addcontentsline{toc}{chapter}{摘要}
-%}{}
-%
-%\newenvironment{abstractEN}
-%{
-%  \chapter*{Abstract}
-%  \addcontentsline{toc}{chapter}{Abstract}
-%}{}
+
 
 \newcommand{\keywordsCN}[1]{
   \par
@@ -547,50 +383,6 @@
   \addcontentsline{toc}{chapter}{#1}
 }
 
-%有些章节名如“致谢”、“附录”，无需章节编号，相当于chapter*，但需要把章节名加入目录，相应的页眉也要改动
-%通过\chapterx和\chapterxname来完成。
-%\def \chapterxname#1{\gdef\@chapterxname{#1}}
-%\newcommand{\chapterx}[1]
-%{
-%  \chapterxtrue
-%  \chapter*{#1}
-%  \chapterxname{#1}
-%  \addcontentsline{toc}{chapter}{#1}
-%}
-
-%\renewcommand{\appendix}[1]{%
-%  % \chaptertitle is not available for those chapters without label number.
-%   \cleardoublepage
-%   \renewcommand{\thesection}{{#1}\arabic{section}}
-%   \chapter*{#1}
-%   \chapterxname{\thesection\quad\sectiontitle}
-%   \addcontentsline{toc}{chapter}{#1}
-%   \setcounter{section}{0}
-%}
-
-%\renewenvironment{verse}
-%               {\let\\\@centercr
-%                \list{}{\itemsep      \z@
-%                        \itemindent   -1.5em%
-%                        \listparindent\itemindent
-%                        \rightmargin  \leftmargin
-%                        \advance\leftmargin 1.5em}%
-%                \item\relax}
-%               {\endlist}
-%\renewenvironment{quotation}
-%               {\list{}{\listparindent 1.5em%
-%                        \itemindent    \listparindent
-%                        \rightmargin   \leftmargin
-%                        \parsep        \z@ \@plus\p@}%
-%                \item\relax}
-%               {\endlist}
-%\renewenvironment{quote}
-%               {\list{}{\rightmargin\leftmargin}%\vspace{-15pt}
-%                \item\relax}
-%               {\endlist}
-
-
-%\sethead[ even-left ][ even-center ][ even-right ]    { odd-left }{ odd-center }{ odd-right }
 \newpagestyle{revtitlestyle}{
   \sethead[][{openGauss 并行物化算子优化实验报告}][] % 页眉偶数页
   {}{{openGauss 并行物化算子优化实验报告}}{} % 页眉奇数页
@@ -600,17 +392,6 @@
   \setheadrule{1.5pt}%设置横线粗细
 }
 
-%\let\orig@bibliography=\bibliography
-%\renewcommand{\bibliography}[1]{
-%	\cleardoublepage % 使参考文献使用 seunolabel 页面样式
-%	\refbodyfont
-%        \chapterxtrue % 改变页眉标题方式
-%        \chapterxname{\bibname}
-%	\let\ps@plain=\ps@revtitlestyle
-%	\pagestyle{revtitlestyle} % here and continue
-%	\orig@bibliography{#1}
-%	\normalsize
-%}
 
 \renewcommand\frontmatter{ %标题之后，开始中英文摘要，目录
 	\clearpage	
@@ -631,25 +412,8 @@
   \pagestyle{revtitlestyle} % here and continue
   % 开始正文部分
 }
-%\RequirePackage{fancyhdr}
-
-
-
-
-
-
-
-%%定理环境
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \RequirePackage{bm} % 数学符号粗体 % 引入unicode-math后不再需要。若不使用unicode-math，boldsymbol命令也没法加粗，则可考虑借助bm包。
-%\RequirePackage[amsmath,thmmarks]{ntheorem}
 \RequirePackage{amsthm}
-%允许公式换页显示,否则大型推导公式都在一页内，
-%一页显示不下放到第二页，导致很大的空白空间，很不好看
 \allowdisplaybreaks[4]
-%\setlength\jot{1pt} %公式之间的距离,TODO
-
-
 \newtheoremstyle{definition}% name
   {0pt}%      Space above, empty = `usual value'
   {0pt}%      Space below
@@ -663,8 +427,7 @@
 \newtheorem{definition}{定义~}[chapter]
 \newtheorem{example}{例~}[chapter]
 \newtheorem{remark}{注~}[chapter]
-\newtheorem{assumption}{假设~}[chapter]	% by mch
-% ------改为definition，by mch
+\newtheorem{assumption}{假设~}[chapter]	
 \newtheorem{proposition}{命题~}[chapter]
 \newtheorem{lemma}{引理~}[chapter]
 \newtheorem{theorem}{定理~}[chapter]
@@ -673,9 +436,6 @@
 \newtheorem{case}{情形~}[chapter]
 \newtheorem{conjecture}{猜想~}[chapter]
 \newtheorem{property}{性质~}[chapter]
-% ----------
-
-%% 可继续用\newtheorem命令添加需要的环境
 
 \newtheoremstyle{plain}% name
   {0pt}%      Space above, empty = `usual value'
@@ -687,29 +447,11 @@
   {0.5em}% Space after thm head: \newline = linebreak
   {}%         Thm head spec
 \theoremstyle{plain}
-% -------------------根据2022年博士论文送审反馈意见，下面部分改为正体，故移到definition--------by mch
-% \newtheorem{proposition}{命题~}[chapter]
-% \newtheorem{lemma}{引理~}[chapter]
-% \newtheorem{theorem}{定理~}[chapter]
-% \newtheorem{axiom}{公理~}[chapter]
-% \newtheorem{corollary}{ 推论~}[chapter]
-% \newtheorem{case}{情形~}[chapter]
-% \newtheorem{conjecture}{猜想~}[chapter]
-% \newtheorem{property}{性质~}[chapter]
-%% 可继续用\newtheorem命令添加需要的环境
-% ------------
-
 \renewenvironment{proof}{\vskip 1pt\indent  证明:~\normalfont}{\hfill$\square$\vskip 0.01\baselineskip} %$\blacksquare$ -----去掉\itshape 该命令用于设置斜体
 
-
-%\renewcommand{\proofname}{\hskip 2em 证明:~} %
-%%%%%%%%%%%%%%%%%   end of 定理环境
-
-% 公式和正文的间距由4pt改为10pt，更美观
 \abovedisplayshortskip=10pt
 \belowdisplayshortskip=10pt
 \abovedisplayskip=10pt
 \belowdisplayskip=10pt
 
 \endinput
-%% End of file `scutthesis.cls'.
