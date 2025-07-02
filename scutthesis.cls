@@ -338,7 +338,7 @@
     \hline
     \sihao\songti \textbf{学\hspace{1cm}院：}软件学院 & \sihao\songti \textbf{专业班级：}软件工程3班 \\
     \hline
-    \sihao\songti \textbf{课程名称：}《openGauss并行物化算子优化》 & \sihao\songti \textbf{任课教师：}汤德佑 \\
+    \sihao\songti \textbf{课程名称：}《云计算与大数据开发实训》 & \sihao\songti \textbf{任课教师：}汤德佑 \\
     \hline
     % 教师评语：跨两列，形成一个大的评语区域
     \multicolumn{2}{|p{\dimexpr\textwidth-2\tabcolsep-2\arrayrulewidth\relax}|}{
